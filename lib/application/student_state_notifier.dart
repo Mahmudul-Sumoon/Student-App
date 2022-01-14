@@ -1,8 +1,10 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_app/api_state/api_state.dart';
 import 'package:student_app/infrastructure/model/api_response.dart';
 import 'package:student_app/infrastructure/model/students_model.dart';
 import 'package:student_app/infrastructure/repository/students_repository.dart';
+import 'package:student_app/utilities/utilities.dart';
 
 class StudentStateNotifier extends StateNotifier<StudentDataState> {
   final StudentRepository userRepository;
@@ -15,19 +17,44 @@ class StudentStateNotifier extends StateNotifier<StudentDataState> {
     try {
       state = const StudentDataState.loading();
       final userData = await userRepository.findAllStudents();
-      state = StudentDataState<Students>.success(userData);
+      state = StudentDataState.success(userData);
     } catch (e) {
       state = StudentDataState.error(e.toString());
     }
   }
+}
 
+class StudentReponseNotifier extends StateNotifier<StudentAPIResponseState> {
+  final StudentRepository userRepository;
+  StudentReponseNotifier(this.userRepository)
+      : super(const StudentAPIResponseState.initial());
   Future<void> deleteStudent(String name) async {
     try {
-      state = const StudentDataState.loading();
+      state = const StudentAPIResponseState.loading();
       final userData = await userRepository.deleteStudent(name);
-      state = StudentDataState<ApiResponse>.success(userData);
+      state = StudentAPIResponseState.success(userData);
     } catch (e) {
-      state = StudentDataState.error(e.toString());
+      state = StudentAPIResponseState.error(e.toString());
+    }
+  }
+
+  Future<void> createStudent(Datum data) async {
+    try {
+      state = const StudentAPIResponseState.loading();
+      final userData = await userRepository.createStudent(data);
+      state = StudentAPIResponseState.success(userData);
+    } catch (e) {
+      state = StudentAPIResponseState.error(e.toString());
+    }
+  }
+
+  Future<void> updateastudent(Datum data, String phone) async {
+    try {
+      state = const StudentAPIResponseState.loading();
+      final userData = await userRepository.updateastudent(phone, data);
+      state = StudentAPIResponseState.success(userData);
+    } catch (e) {
+      state = StudentAPIResponseState.error(e.toString());
     }
   }
 }

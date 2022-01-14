@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:student_app/api_state/api_state.dart';
+import 'package:student_app/infrastructure/model/students_model.dart';
+import 'package:student_app/providers.dart';
 
-class EditScreen extends StatelessWidget {
+class EditScreen extends ConsumerWidget {
   EditScreen(
       {required this.name,
       required this.email,
@@ -19,7 +23,9 @@ class EditScreen extends StatelessWidget {
   int id;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final responseMessage = ref.watch(reponseStateNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Student APP"),
@@ -104,7 +110,29 @@ class EditScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10.0),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                if (id == 2) {
+                  await ref
+                      .read(reponseStateNotifierProvider.notifier)
+                      .createStudent(Datum(
+                          name: name,
+                          email: email,
+                          phone: phone,
+                          address: address));
+                  Navigator.pop(context);
+                } else {
+                  await ref
+                      .read(reponseStateNotifierProvider.notifier)
+                      .updateastudent(
+                          Datum(
+                              name: name,
+                              email: email,
+                              phone: phone,
+                              address: address),
+                          phone);
+                  Navigator.pop(context);
+                }
+              },
               child: Text(
                 buttonText,
                 style: const TextStyle(

@@ -6,7 +6,7 @@ extension Toast on String {
       {required Duration duration}) {
     (context) {
       Future.delayed(duration, () {
-        Navigator.of(context).pop(true);
+        Navigator.of(context, rootNavigator: true).pop();
       });
     };
     return showDialog(
@@ -23,7 +23,6 @@ extension Toast on String {
               0.0,
             ),
             child: AlertDialog(
-              backgroundColor: const Color(0xff24283b),
               //behavior: SnackBarBehavior.floating,
               elevation: 2.0,
 

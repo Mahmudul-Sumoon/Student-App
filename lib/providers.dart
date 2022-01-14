@@ -11,4 +11,8 @@ final studentStateNotifierProvider =
     StateNotifierProvider.autoDispose<StudentStateNotifier, StudentDataState>(
         (ref) => StudentStateNotifier(ref.watch(studentRepositoryProvider)));
 
+final reponseStateNotifierProvider = StateNotifierProvider.autoDispose<
+        StudentReponseNotifier, StudentAPIResponseState>(
+    (ref) => StudentReponseNotifier(ref.watch(studentRepositoryProvider)));
+
 //final currentUser = Provider<User>((ref) => throw UnimplementedError());

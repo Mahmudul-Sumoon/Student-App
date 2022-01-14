@@ -54,6 +54,48 @@ class StudentRepository implements BaseStudentRepository {
       throw Failure('Check Internet Connection!');
     }
   }
+
+  Future<ApiResponse> createStudent(Datum data) async {
+    try {
+      final bodyValue = datumToJson(data);
+      final http.Response response = await http.post(
+        Uri.parse('${baseUrl}createstudent/'),
+        body: bodyValue,
+        headers: {'Content-Type': "application/json; charset=UTF-8"},
+      );
+      if (response.statusCode == 201) {
+        final ApiResponse data = apiResponseFromJson(response.body);
+        return data;
+      } else if (response.statusCode == 404) {
+        throw Failure('Not Found any data!');
+      } else {
+        throw Failure('Check Internet Connection!');
+      }
+    } on SocketException {
+      throw Failure('Check Internet Connection!');
+    }
+  }
+
+  Future<ApiResponse> updateastudent(String phone, Datum data) async {
+    try {
+      final bodyValue = datumToJson(data);
+      final response = await http.patch(
+        Uri.parse('${baseUrl}updateastudent/$phone'),
+        body: bodyValue,
+        headers: {'Content-Type': "application/json; charset=UTF-8"},
+      );
+      if (response.statusCode == 200) {
+        final ApiResponse data = apiResponseFromJson(response.body);
+        return data;
+      } else if (response.statusCode == 500) {
+        throw Failure('Not Found any data!');
+      } else {
+        throw Failure('Check Internet Connection!');
+      }
+    } on SocketException {
+      throw Failure('Check Internet Connection!');
+    }
+  }
 }
 
 class Success {

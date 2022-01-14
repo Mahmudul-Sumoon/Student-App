@@ -11,6 +11,7 @@ part 'students_model.g.dart';
 Students studentsFromJson(String str) => Students.fromJson(json.decode(str));
 
 String studentsToJson(Students data) => json.encode(data.toJson());
+String datumToJson(Datum data) => json.encode(data.toJson());
 
 @freezed
 abstract class Students with _$Students {

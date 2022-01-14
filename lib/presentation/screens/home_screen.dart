@@ -1,19 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:student_app/api_state/api_state.dart';
 import 'package:student_app/infrastructure/model/students_model.dart';
 import 'package:student_app/presentation/screens/edit_screen.dart';
 import 'package:student_app/providers.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
+
+  void resfreshStudentList(WidgetRef ref) {
+    ref.read(studentStateNotifierProvider.notifier).findAllStudents();
+  }
+
+  //final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final student = ref.watch(studentStateNotifierProvider);
+    final responseMessage = ref.watch(reponseStateNotifierProvider);
+
+    ref.listen<StudentAPIResponseState>(reponseStateNotifierProvider,
+        (previous, current) {
+      current.maybeWhen(
+          success: (d) => ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: current.maybeWhen(
+                    success: (d) {
+                      resfreshStudentList(ref);
+                      return Text(d.data.toString());
+                    },
+                    orElse: () => Container(),
+                  ),
+                ),
+              ),
+          orElse: () {});
+    });
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Student APP"),
+        title: const Text("Student App"),
       ),
       body: student.when(
         initial: () => Container(),
@@ -72,12 +98,10 @@ class HomeScreen extends ConsumerWidget {
                         ),
                         IconButton(
                           onPressed: () async {
-                            final re = await ref
-                                .read(studentStateNotifierProvider.notifier)
+                            await ref
+                                .read(reponseStateNotifierProvider.notifier)
                                 .deleteStudent(x.data![i].name.toString());
-                            ref
-                                .refresh(studentStateNotifierProvider.notifier)
-                                .findAllStudents();
+                            //resfreshStudentList(ref);
                           },
                           icon: const Icon(
                             Icons.delete_forever,
