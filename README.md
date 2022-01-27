@@ -2,15 +2,34 @@
 
 A new Flutter project.
 
-## Getting Started
+## Getting Started With Riverpod
+> provider - provide application layer to presentation layer
 
-This project is a starting point for a Flutter application.
+> presentation layer - contains widget
 
-A few resources to get you started if this is your first Flutter project:
+> APIState - indicates the state of presentation layer.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+><table>
+<th>Application Layer</th>
+<tbody>
+<tr>
+<td>Connects Presentation layer with Infrastructure/repository.</td>
+</tr>
+<tr>
+<td>Define statenotifier where statenotifier extends  APIState.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<th>Infrastructure Layer</th>
+<tbody>
+<tr>
+<td>Model contains the data model</td>
+</tr>
+<tr>
+<td>Repository fulfill the demand of application layer via call API,DataBase etc.</td>
+</tr>
+</tbody>
+</table>
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+

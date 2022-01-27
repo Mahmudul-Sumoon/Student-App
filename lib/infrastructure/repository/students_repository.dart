@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -9,6 +8,8 @@ import 'package:student_app/constant.dart';
 abstract class BaseStudentRepository {
   Future<Students> findAllStudents();
   Future<ApiResponse> deleteStudent(String name);
+  Future<ApiResponse> createStudent(Datum data);
+  Future<ApiResponse> updateastudent(String phone, Datum data);
 }
 
 class StudentRepository implements BaseStudentRepository {
@@ -55,6 +56,7 @@ class StudentRepository implements BaseStudentRepository {
     }
   }
 
+  @override
   Future<ApiResponse> createStudent(Datum data) async {
     try {
       final bodyValue = datumToJson(data);
@@ -76,6 +78,7 @@ class StudentRepository implements BaseStudentRepository {
     }
   }
 
+  @override
   Future<ApiResponse> updateastudent(String phone, Datum data) async {
     try {
       final bodyValue = datumToJson(data);
