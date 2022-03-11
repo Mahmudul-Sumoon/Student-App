@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_app/api_state/api_state.dart';
 import 'package:student_app/infrastructure/model/students_model.dart';
@@ -13,13 +15,24 @@ class StudentStateNotifier extends StateNotifier<StudentDataState> {
   Future<void> findAllStudents() async {
     try {
       state = const StudentDataState.loading();
-      final userData = await userRepository.findAllStudents();
+      final userData = userRepository.findAllStudents();
       state = StudentDataState.success(userData);
     } catch (e) {
       state = StudentDataState.error(e.toString());
     }
   }
 }
+
+//   StreamSubscription<Students> findAllStudents() {
+//     try {
+//       state = const StudentDataState.loading();
+//       final userData = userRepository.findAllStudents();
+//       return state = userData;
+//     } catch (e) {
+//       state = StudentDataState.error(e.toString());
+//     }
+//   }
+// }
 
 class StudentReponseNotifier extends StateNotifier<StudentAPIResponseState> {
   final StudentRepository userRepository;

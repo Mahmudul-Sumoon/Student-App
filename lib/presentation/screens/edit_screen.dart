@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:student_app/api_state/api_state.dart';
 import 'package:student_app/infrastructure/model/students_model.dart';
 import 'package:student_app/providers.dart';
 
 class EditScreen extends ConsumerWidget {
   EditScreen(
-      {required this.name,
+      {Key? key,
+      required this.name,
       required this.email,
       required this.phone,
       required this.address,
       required this.upText,
       required this.buttonText,
-      required this.id});
+      required this.id})
+      : super(key: key);
   String name;
   String email;
   String phone;

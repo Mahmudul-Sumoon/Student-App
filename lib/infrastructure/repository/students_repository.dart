@@ -6,7 +6,8 @@ import 'package:student_app/infrastructure/model/students_model.dart';
 import 'package:student_app/constant.dart';
 
 abstract class BaseStudentRepository {
-  Future<Students> findAllStudents();
+  //Future<Students> findAllStudents();
+  Stream<Students> findAllStudents();
   Future<ApiResponse> deleteStudent(String name);
   Future<ApiResponse> createStudent(Datum data);
   Future<ApiResponse> updateastudent(String phone, Datum data);
@@ -15,15 +16,36 @@ abstract class BaseStudentRepository {
 class StudentRepository implements BaseStudentRepository {
   final http.Client _httpClient;
   StudentRepository(this._httpClient);
+  // @override
+  // Future<Students> findAllStudents() async {
+  //   try {
+  //     final http.Response response =
+  //         await _httpClient.get(Uri.parse('${baseUrl}findallstudent/'));
+  //     if (response.statusCode == 200) {
+  //       final Students data = studentsFromJson(response.body);
+  //       //print("repository" + data.toString());
+  //       return data;
+
+  //       //return data;
+  //     } else if (response.statusCode == 404) {
+  //       throw Failure('Not Found any data!');
+  //     } else {
+  //       throw Failure('Check Internet Connection!${response.statusCode}');
+  //     }
+  //   } on SocketException {
+  //     throw Failure('Check Internet Connection!');
+  //   }
+  // }
+
   @override
-  Future<Students> findAllStudents() async {
+  Stream<Students> findAllStudents() async* {
     try {
       final http.Response response =
           await _httpClient.get(Uri.parse('${baseUrl}findallstudent/'));
       if (response.statusCode == 200) {
         final Students data = studentsFromJson(response.body);
         //print("repository" + data.toString());
-        return data;
+        yield data;
 
         //return data;
       } else if (response.statusCode == 404) {
